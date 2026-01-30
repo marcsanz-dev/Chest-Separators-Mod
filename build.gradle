@@ -11,12 +11,12 @@ base {
 }
 
 loom {
-    splitEnvironmentSourceSets()
+    //splitEnvironmentSourceSets()
 
     mods {
         "chestseparators" {
             sourceSet sourceSets.main
-            sourceSet sourceSets.client
+            //sourceSet sourceSets.client
         }
     }
 }
