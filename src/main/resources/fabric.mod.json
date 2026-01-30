@@ -14,7 +14,7 @@
       "io.github.marcsanzdev.chestseparators.client.ChestseparatorsDataGenerator"
     ],
     "client": [
-      "io.github.marcsanzdev.chestseparators.client.ChestseparatorsClient"
+      "io.github.marcsanzdev.chestseparators.client.ChestSeparatorsClient"
     ],
     "main": [
       "io.github.marcsanzdev.chestseparators.Chestseparators"

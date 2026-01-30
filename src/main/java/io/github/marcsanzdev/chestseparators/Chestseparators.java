@@ -12,6 +12,6 @@ public class Chestseparators implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("¡Chest Separators se ha cargado correctamente!");
+        LOGGER.info("[ChestSeparators] Common/Server Initializer loaded.");
     }
 }
