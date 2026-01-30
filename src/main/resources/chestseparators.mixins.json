@@ -4,6 +4,7 @@
   "package": "io.github.marcsanzdev.chestseparators.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ContainerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
