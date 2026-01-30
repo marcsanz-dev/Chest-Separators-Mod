@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "io.github.marcsanzdev.chestseparators.mixin.client",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "GenericContainerScreenMixin",
+    "HandledScreenAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

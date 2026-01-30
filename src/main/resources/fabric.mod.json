@@ -18,7 +18,11 @@
     ]
   },
   "mixins": [
-    "chestseparators.mixins.json"
+    "chestseparators.mixins.json",
+    {
+      "config": "chestseparators.client.mixins.json",
+      "environment": "client"
+    }
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",
