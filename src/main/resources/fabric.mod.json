@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "chestseparators",
+  "version": "${version}",
+  "name": "ChestSeparators",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/chestseparators/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "io.github.marcsanzdev.chestseparators.client.ChestseparatorsDataGenerator"
+    ],
+    "client": [
+      "io.github.marcsanzdev.chestseparators.client.ChestseparatorsClient"
+    ],
+    "main": [
+      "io.github.marcsanzdev.chestseparators.Chestseparators"
+    ]
+  },
+  "mixins": [
+    "chestseparators.mixins.json",
+    {
+      "config": "chestseparators.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
