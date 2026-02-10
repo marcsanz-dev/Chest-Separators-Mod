@@ -11,10 +11,9 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "io.github.marcsanzdev.chestseparators.client.ChestSeparatorsClient"
+      "io.github.marcsanzdev.chestseparators.ChestSeparatorsClient"
     ],
     "main": [
-      "io.github.marcsanzdev.chestseparators.Chestseparators"
     ]
   },
   "mixins": [

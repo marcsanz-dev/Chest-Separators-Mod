@@ -1,0 +1,14 @@
+{
+  "key.category.chestseparators.general": "Chest Separators Mod",
+  "key.chestseparators.toggle_button": "Toggle Edit Button",
+  "tooltip.chestseparators.edit_mode_hint": "Toggle Edit Mode (%s to hide)",
+  "tooltip.chestseparators.eraser": "Eraser: Remove specific lines",
+  "tooltip.chestseparators.clear_all": "Trash: Clear all separators",
+  "tooltip.chestseparators.copy": "Copy: Save layout to clipboard",
+  "tooltip.chestseparators.paste": "Paste: Apply layout from clipboard",
+  "message.chestseparators.button_visible": "Edit Button: Visible",
+  "message.chestseparators.button_hidden": "Edit Button: Hidden",
+  "message.chestseparators.cleared": "Layout cleared",
+  "message.chestseparators.copied": "Layout copied",
+  "message.chestseparators.pasted": "Layout pasted"
+}

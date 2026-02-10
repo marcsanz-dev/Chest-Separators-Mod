@@ -1,0 +1,14 @@
+{
+  "key.category.chestseparators.general": "チェストセパレーター Mod",
+  "key.chestseparators.toggle_button": "編集ボタンの切り替え",
+  "tooltip.chestseparators.edit_mode_hint": "編集モード (%s で非表示)",
+  "tooltip.chestseparators.eraser": "消しゴム：線を削除",
+  "tooltip.chestseparators.clear_all": "ゴミ箱：すべて消去",
+  "tooltip.chestseparators.copy": "レイアウトをコピー",
+  "tooltip.chestseparators.paste": "レイアウトを貼り付け",
+  "message.chestseparators.button_visible": "編集ボタン：表示",
+  "message.chestseparators.button_hidden": "編集ボタン：非表示",
+  "message.chestseparators.cleared": "レイアウトを消去しました",
+  "message.chestseparators.copied": "レイアウトをコピーしました",
+  "message.chestseparators.pasted": "レイアウトを貼り付けました"
+}

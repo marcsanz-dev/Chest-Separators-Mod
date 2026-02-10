@@ -1,0 +1,14 @@
+{
+  "key.category.chestseparators.general": "Мод Chest Separators",
+  "key.chestseparators.toggle_button": "Показать/Скрыть кнопку",
+  "tooltip.chestseparators.edit_mode_hint": "Режим редактирования (%s чтобы скрыть)",
+  "tooltip.chestseparators.eraser": "Ластик: Удалить линии",
+  "tooltip.chestseparators.clear_all": "Корзина: Удалить всё",
+  "tooltip.chestseparators.copy": "Копировать",
+  "tooltip.chestseparators.paste": "Вставить",
+  "message.chestseparators.button_visible": "Кнопка редактирования: Видима",
+  "message.chestseparators.button_hidden": "Кнопка редактирования: Скрыта",
+  "message.chestseparators.cleared": "Макет очищен",
+  "message.chestseparators.copied": "Макет скопирован",
+  "message.chestseparators.pasted": "Макет вставлен"
+}

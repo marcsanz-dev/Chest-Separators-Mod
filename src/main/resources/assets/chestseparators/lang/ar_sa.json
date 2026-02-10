@@ -1,0 +1,14 @@
+{
+  "key.category.chestseparators.general": "مود فواصل الصناديق",
+  "key.chestseparators.toggle_button": "تبديل زر التحرير",
+  "tooltip.chestseparators.edit_mode_hint": "وضع التحرير (%s للإخفاء)",
+  "tooltip.chestseparators.eraser": "ممحاة: إزالة خطوط محددة",
+  "tooltip.chestseparators.clear_all": "سلة المهملات: مسح الكل",
+  "tooltip.chestseparators.copy": "نسخ التخطيط",
+  "tooltip.chestseparators.paste": "لصق التخطيط",
+  "message.chestseparators.button_visible": "زر التحرير: ظاهر",
+  "message.chestseparators.button_hidden": "زر التحرير: مخفي",
+  "message.chestseparators.cleared": "تم مسح التخطيط",
+  "message.chestseparators.copied": "تم نسخ التخطيط",
+  "message.chestseparators.pasted": "تم لصق التخطيط"
+}

@@ -1,0 +1,14 @@
+{
+  "key.category.chestseparators.general": "Chest Separators Modu",
+  "key.chestseparators.toggle_button": "Düzenleme Butonunu Aç/Kapat",
+  "tooltip.chestseparators.edit_mode_hint": "Düzenleme Modu (Gizlemek için %s)",
+  "tooltip.chestseparators.eraser": "Silgi: Çizgileri sil",
+  "tooltip.chestseparators.clear_all": "Çöp Kutusu: Hepsini temizle",
+  "tooltip.chestseparators.copy": "Düzeni kopyala",
+  "tooltip.chestseparators.paste": "Düzeni yapıştır",
+  "message.chestseparators.button_visible": "Düzenleme Butonu: Görünür",
+  "message.chestseparators.button_hidden": "Düzenleme Butonu: Gizli",
+  "message.chestseparators.cleared": "Düzen temizlendi",
+  "message.chestseparators.copied": "Düzen kopyalandı",
+  "message.chestseparators.pasted": "Düzen yapıştırıldı"
+}

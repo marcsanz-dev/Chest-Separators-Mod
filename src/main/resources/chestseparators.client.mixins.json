@@ -1,10 +1,13 @@
 {
   "required": true,
-  "package": "io.github.marcsanzdev.chestseparators.mixin.client",
+  "package": "io.github.marcsanzdev.chestseparators.mixin",
   "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ChestInteractionMixin"
+  ],
   "client": [
-    "GenericContainerScreenMixin",
-    "HandledScreenAccessor"
+    "client.GenericContainerScreenMixin",
+    "client.HandledScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

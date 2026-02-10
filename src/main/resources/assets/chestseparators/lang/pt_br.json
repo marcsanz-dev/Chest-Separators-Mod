@@ -1,0 +1,14 @@
+{
+  "key.category.chestseparators.general": "Mod Chest Separators",
+  "key.chestseparators.toggle_button": "Alternar Botão",
+  "tooltip.chestseparators.edit_mode_hint": "Modo de Edição (%s para ocultar)",
+  "tooltip.chestseparators.eraser": "Borracha: Remover linhas",
+  "tooltip.chestseparators.clear_all": "Lixeira: Limpar tudo",
+  "tooltip.chestseparators.copy": "Copiar layout",
+  "tooltip.chestseparators.paste": "Colar layout",
+  "message.chestseparators.button_visible": "Botão de edição: Visível",
+  "message.chestseparators.button_hidden": "Botão de edição: Oculto",
+  "message.chestseparators.cleared": "Layout limpo",
+  "message.chestseparators.copied": "Layout copiado",
+  "message.chestseparators.pasted": "Layout colado"
+}

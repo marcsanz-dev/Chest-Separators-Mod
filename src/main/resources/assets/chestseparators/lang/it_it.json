@@ -1,0 +1,14 @@
+{
+  "key.category.chestseparators.general": "Mod Chest Separators",
+  "key.chestseparators.toggle_button": "Mostra/Nascondi pulsante",
+  "tooltip.chestseparators.edit_mode_hint": "Modalità Modifica (%s per nascondere)",
+  "tooltip.chestseparators.eraser": "Gomma: Cancella linee",
+  "tooltip.chestseparators.clear_all": "Cestino: Cancella tutto",
+  "tooltip.chestseparators.copy": "Copia layout",
+  "tooltip.chestseparators.paste": "Incolla layout",
+  "message.chestseparators.button_visible": "Pulsante di modifica: Visibile",
+  "message.chestseparators.button_hidden": "Pulsante di modifica: Nascosto",
+  "message.chestseparators.cleared": "Layout cancellato",
+  "message.chestseparators.copied": "Layout copiato",
+  "message.chestseparators.pasted": "Layout incollato"
+}

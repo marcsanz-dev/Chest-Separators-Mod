@@ -1,0 +1,14 @@
+{
+  "key.category.chestseparators.general": "Mod Chest Separators",
+  "key.chestseparators.toggle_button": "Afficher/Masquer le bouton",
+  "tooltip.chestseparators.edit_mode_hint": "Mode Édition (%s pour masquer)",
+  "tooltip.chestseparators.eraser": "Gomme : Effacer des lignes",
+  "tooltip.chestseparators.clear_all": "Corbeille : Tout effacer",
+  "tooltip.chestseparators.copy": "Copier le modèle",
+  "tooltip.chestseparators.paste": "Coller le modèle",
+  "message.chestseparators.button_visible": "Bouton d'édition : Visible",
+  "message.chestseparators.button_hidden": "Bouton d'édition : Masqué",
+  "message.chestseparators.cleared": "Modèle effacé",
+  "message.chestseparators.copied": "Modèle copié",
+  "message.chestseparators.pasted": "Modèle collé"
+}

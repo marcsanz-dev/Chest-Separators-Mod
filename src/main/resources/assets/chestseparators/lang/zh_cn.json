@@ -1,0 +1,14 @@
+{
+  "key.category.chestseparators.general": "箱子分隔符模组",
+  "key.chestseparators.toggle_button": "切换按钮",
+  "tooltip.chestseparators.edit_mode_hint": "编辑模式 (按 %s 隐藏)",
+  "tooltip.chestseparators.eraser": "橡皮擦：删除线条",
+  "tooltip.chestseparators.clear_all": "垃圾桶：全部清除",
+  "tooltip.chestseparators.copy": "复制布局",
+  "tooltip.chestseparators.paste": "粘贴布局",
+  "message.chestseparators.button_visible": "编辑按钮：可见",
+  "message.chestseparators.button_hidden": "编辑按钮：隐藏",
+  "message.chestseparators.cleared": "布局已清除",
+  "message.chestseparators.copied": "布局已复制",
+  "message.chestseparators.pasted": "布局已粘贴"
+}
