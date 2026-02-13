@@ -10,5 +10,10 @@
   "message.chestseparators.button_hidden": "Pulsante di modifica: Nascosto",
   "message.chestseparators.cleared": "Layout cancellato",
   "message.chestseparators.copied": "Layout copiato",
-  "message.chestseparators.pasted": "Layout incollato"
+  "message.chestseparators.pasted": "Layout incollato",
+  "color.chestseparators.custom": "Colore personalizzato %s",
+  "tooltip.chestseparators.open_picker": "Apri selettore colori",
+  "window.chestseparators.edit_color": "Modifica colore",
+  "button.chestseparators.save": "Salva",
+  "button.chestseparators.cancel": "Annulla"
 }

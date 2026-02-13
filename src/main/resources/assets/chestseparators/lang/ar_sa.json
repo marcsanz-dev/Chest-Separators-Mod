@@ -10,5 +10,10 @@
   "message.chestseparators.button_hidden": "زر التحرير: مخفي",
   "message.chestseparators.cleared": "تم مسح التخطيط",
   "message.chestseparators.copied": "تم نسخ التخطيط",
-  "message.chestseparators.pasted": "تم لصق التخطيط"
+  "message.chestseparators.pasted": "تم لصق التخطيط",
+  "color.chestseparators.custom": "لون مخصص %s",
+  "tooltip.chestseparators.open_picker": "فتح منتقي الألوان",
+  "window.chestseparators.edit_color": "تعديل اللون",
+  "button.chestseparators.save": "حفظ",
+  "button.chestseparators.cancel": "إلغاء"
 }

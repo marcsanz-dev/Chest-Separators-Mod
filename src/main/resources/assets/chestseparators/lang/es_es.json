@@ -10,5 +10,10 @@
   "message.chestseparators.button_hidden": "Botón de edición: Oculto",
   "message.chestseparators.cleared": "Diseño borrado",
   "message.chestseparators.copied": "Diseño copiado",
-  "message.chestseparators.pasted": "Diseño pegado"
+  "message.chestseparators.pasted": "Diseño pegado",
+  "color.chestseparators.custom": "Color Personalizado %s",
+  "tooltip.chestseparators.open_picker": "Abrir Selector",
+  "window.chestseparators.edit_color": "Editar Color",
+  "button.chestseparators.save": "Guardar",
+  "button.chestseparators.cancel": "Cancelar"
 }

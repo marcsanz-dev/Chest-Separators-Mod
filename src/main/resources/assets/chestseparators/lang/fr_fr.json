@@ -10,5 +10,10 @@
   "message.chestseparators.button_hidden": "Bouton d'édition : Masqué",
   "message.chestseparators.cleared": "Modèle effacé",
   "message.chestseparators.copied": "Modèle copié",
-  "message.chestseparators.pasted": "Modèle collé"
+  "message.chestseparators.pasted": "Modèle collé",
+  "color.chestseparators.custom": "Couleur personnalisée %s",
+  "tooltip.chestseparators.open_picker": "Ouvrir le sélecteur",
+  "window.chestseparators.edit_color": "Modifier la couleur",
+  "button.chestseparators.save": "Sauvegarder",
+  "button.chestseparators.cancel": "Annuler"
 }

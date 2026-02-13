@@ -10,5 +10,10 @@
   "message.chestseparators.button_hidden": "संपादन बटन: छिपा हुआ",
   "message.chestseparators.cleared": "लेआउट साफ़ किया गया",
   "message.chestseparators.copied": "लेआउट कॉपी किया गया",
-  "message.chestseparators.pasted": "लेआउट पेस्ट किया गया"
+  "message.chestseparators.pasted": "लेआउट पेस्ट किया गया",
+  "color.chestseparators.custom": "कस्टम रंग %s",
+  "tooltip.chestseparators.open_picker": "रंग चयनकर्ता खोलें",
+  "window.chestseparators.edit_color": "रंग संपादित करें",
+  "button.chestseparators.save": "सहेजें",
+  "button.chestseparators.cancel": "रद्द करें"
 }

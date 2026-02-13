@@ -10,5 +10,10 @@
   "message.chestseparators.button_hidden": "Botão de edição: Oculto",
   "message.chestseparators.cleared": "Layout limpo",
   "message.chestseparators.copied": "Layout copiado",
-  "message.chestseparators.pasted": "Layout colado"
+  "message.chestseparators.pasted": "Layout colado",
+  "color.chestseparators.custom": "Cor personalizada %s",
+  "tooltip.chestseparators.open_picker": "Abrir seletor de cores",
+  "window.chestseparators.edit_color": "Editar cor",
+  "button.chestseparators.save": "Salvar",
+  "button.chestseparators.cancel": "Cancelar"
 }

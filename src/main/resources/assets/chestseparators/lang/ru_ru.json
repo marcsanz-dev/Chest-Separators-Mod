@@ -1,14 +1,19 @@
 {
-  "key.category.chestseparators.general": "Мод Chest Separators",
-  "key.chestseparators.toggle_button": "Показать/Скрыть кнопку",
+  "key.category.chestseparators.general": "Мод Разделители Сундуков",
+  "key.chestseparators.toggle_button": "Кнопка редактирования",
   "tooltip.chestseparators.edit_mode_hint": "Режим редактирования (%s чтобы скрыть)",
   "tooltip.chestseparators.eraser": "Ластик: Удалить линии",
-  "tooltip.chestseparators.clear_all": "Корзина: Удалить всё",
-  "tooltip.chestseparators.copy": "Копировать",
-  "tooltip.chestseparators.paste": "Вставить",
-  "message.chestseparators.button_visible": "Кнопка редактирования: Видима",
-  "message.chestseparators.button_hidden": "Кнопка редактирования: Скрыта",
+  "tooltip.chestseparators.clear_all": "Корзина: Очистить все",
+  "tooltip.chestseparators.copy": "Копировать макет",
+  "tooltip.chestseparators.paste": "Вставить макет",
+  "message.chestseparators.button_visible": "Кнопка ред.: Видима",
+  "message.chestseparators.button_hidden": "Кнопка ред.: Скрыта",
   "message.chestseparators.cleared": "Макет очищен",
   "message.chestseparators.copied": "Макет скопирован",
-  "message.chestseparators.pasted": "Макет вставлен"
+  "message.chestseparators.pasted": "Макет вставлен",
+  "color.chestseparators.custom": "Свой цвет %s",
+  "tooltip.chestseparators.open_picker": "Открыть палитру",
+  "window.chestseparators.edit_color": "Редактировать цвет",
+  "button.chestseparators.save": "Сохранить",
+  "button.chestseparators.cancel": "Отмена"
 }

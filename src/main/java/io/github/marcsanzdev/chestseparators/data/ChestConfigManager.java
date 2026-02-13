@@ -8,44 +8,37 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtSizeTracker;
 import net.minecraft.util.math.BlockPos;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-// Singleton state manager for chest separator configurations.
-// Handles NBT serialization/deserialization, runtime state management, and file I/O operations.
-// Strictly confined to the CLIENT side as layout data is visual-only and local to the user.
 @Environment(EnvType.CLIENT)
 public class ChestConfigManager {
 
     private static final String MOD_ID = "chestseparators";
     private static final String FOLDER_NAME = "separators";
     private static final String ENDER_FILE_NAME = "ender_chest.dat";
+    private static final String PALETTE_FILE_NAME = "world_palette.dat";
 
-    // Bitmask flags representing the four cardinal directions for line rendering.
-    // Enables efficient bitwise operations for storing multiple lines in a single integer.
     public static final int ACTION_TOP = 1;
     public static final int ACTION_BOTTOM = 2;
     public static final int ACTION_LEFT = 4;
     public static final int ACTION_RIGHT = 8;
 
-    // Data packing constants.
-    // Each line direction occupies 5 bits to store color index (0-31), though palette is smaller.
-    // 5 bits * 4 directions = 20 bits total, fitting comfortably within a 32-bit Integer.
-    private static final int MASK_5BITS = 0x1F;
-    private static final int SHIFT_TOP = 0;
-    private static final int SHIFT_BOTTOM = 5;
-    private static final int SHIFT_LEFT = 10;
-    private static final int SHIFT_RIGHT = 15;
+    private static final int IDX_TOP = 0;
+    private static final int IDX_BOTTOM = 1;
+    private static final int IDX_LEFT = 2;
+    private static final int IDX_RIGHT = 3;
 
-    // Runtime cache for the currently opened container's configuration.
-    // Maps Slot Index -> Packed Integer Data (Color + Direction).
-    private final Map<Integer, Integer> currentChestConfig = new HashMap<>();
-
-    // Volatile storage for copy-paste functionality. Persists only during the session.
-    private Map<Integer, Integer> clipboardConfig = null;
+    private final Map<Integer, int[]> currentChestConfig = new HashMap<>();
+    private Map<Integer, int[]> clipboardConfig = null;
+    private int[] worldCustomColors = new int[8];
 
     private static final ChestConfigManager INSTANCE = new ChestConfigManager();
 
@@ -53,87 +46,114 @@ public class ChestConfigManager {
         return INSTANCE;
     }
 
-    // Resets the active configuration state. Called when closing a container GUI.
     public void clearCurrentConfig() {
         currentChestConfig.clear();
     }
 
-    // Retrieves the packed data integer for a specific slot index.
-    // Returns 0 (no lines) if the slot has no configuration.
-    public int getSlotData(int slotIndex) {
-        return currentChestConfig.getOrDefault(slotIndex, 0);
+    public int[] getCustomColors() {
+        return worldCustomColors;
     }
 
-    // Unpacks the color index from the integer data for a specific direction shift.
-    // Returns -1 if no line is present in that direction.
-    // Subtracts 1 to convert stored value (1-based) back to 0-based palette index.
-    public int getLineColor(int slotData, int shift) {
-        int val = (slotData >> shift) & MASK_5BITS;
-        if (val == 0) return -1;
-        return val - 1;
-    }
-
-    // Applies a new line color to the specified slot and direction(s).
-    // Stores color as 1-based index to distinguish "color 0" from "no line".
-    public void paintLine(int slotIndex, int actionFlags, int selectedColorIndex) {
-        int data = currentChestConfig.getOrDefault(slotIndex, 0);
-        int colorVal = selectedColorIndex + 1;
-
-        if ((actionFlags & ACTION_TOP) != 0) data = updateLine(data, SHIFT_TOP, colorVal);
-        if ((actionFlags & ACTION_BOTTOM) != 0) data = updateLine(data, SHIFT_BOTTOM, colorVal);
-        if ((actionFlags & ACTION_LEFT) != 0) data = updateLine(data, SHIFT_LEFT, colorVal);
-        if ((actionFlags & ACTION_RIGHT) != 0) data = updateLine(data, SHIFT_RIGHT, colorVal);
-
-        currentChestConfig.put(slotIndex, data);
-    }
-
-    // Clears line data for the specified direction(s) using bitwise masking.
-    // If the resulting data is 0, the entry is removed from the map to save memory.
-    public void removeLine(int slotIndex, int actionFlags) {
-        int data = currentChestConfig.getOrDefault(slotIndex, 0);
-
-        if ((actionFlags & ACTION_TOP) != 0) data &= ~(MASK_5BITS << SHIFT_TOP);
-        if ((actionFlags & ACTION_BOTTOM) != 0) data &= ~(MASK_5BITS << SHIFT_BOTTOM);
-        if ((actionFlags & ACTION_LEFT) != 0) data &= ~(MASK_5BITS << SHIFT_LEFT);
-        if ((actionFlags & ACTION_RIGHT) != 0) data &= ~(MASK_5BITS << SHIFT_RIGHT);
-
-        if (data == 0) currentChestConfig.remove(slotIndex);
-        else currentChestConfig.put(slotIndex, data);
-    }
-
-    // Helper method to perform bitwise insertion of new data.
-    // Clears the target 5 bits first, then ORs the new value.
-    private int updateLine(int currentData, int shift, int newColorVal) {
-        int clearMask = ~(MASK_5BITS << shift);
-        int dataCleaned = currentData & clearMask;
-        return dataCleaned | (newColorVal << shift);
-    }
-
-    // --- CLIPBOARD OPERATIONS ---
-
-    // Creates a deep copy of the current configuration map to the clipboard.
-    // Ensures isolation between source and destination data.
-    public void copyToClipboard() {
-        this.clipboardConfig = new HashMap<>(this.currentChestConfig);
-    }
-
-    // Overwrites the current chest configuration with the clipboard data.
-    // Only performs the operation if valid data exists in the clipboard.
-    public void pasteFromClipboard() {
-        if (this.clipboardConfig != null && !this.clipboardConfig.isEmpty()) {
-            this.currentChestConfig.clear();
-            this.currentChestConfig.putAll(this.clipboardConfig);
+    public void setCustomColor(int index, int color) {
+        if (index >= 0 && index < worldCustomColors.length) {
+            worldCustomColors[index] = color;
         }
     }
 
-    public boolean hasClipboardData() {
-        return this.clipboardConfig != null && !this.clipboardConfig.isEmpty();
+    // --- CARGA/GUARDA PALETA (NIO) ---
+
+    public void loadWorldPalette() {
+        worldCustomColors = new int[8];
+        Path path = getWorldConfigDir().resolve(PALETTE_FILE_NAME);
+
+        if (!Files.exists(path)) return;
+
+        try {
+            NbtCompound root = NbtIo.readCompressed(path, NbtSizeTracker.ofUnlimitedBytes());
+            if (root.contains("Palette")) {
+                root.getIntArray("Palette").ifPresent(loadedColors -> {
+                    if (loadedColors.length == 8) {
+                        worldCustomColors = loadedColors;
+                    } else {
+                        System.arraycopy(loadedColors, 0, worldCustomColors, 0, Math.min(loadedColors.length, 8));
+                    }
+                });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    // --- WORLD & DIRECTORY RESOLUTION ---
+    public void saveWorldPalette() {
+        Path path = getWorldConfigDir().resolve(PALETTE_FILE_NAME);
+        NbtCompound root = new NbtCompound();
+        root.putIntArray("Palette", worldCustomColors);
+        try {
+            NbtIo.writeCompressed(root, path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    // Generates a sanitized folder name based on the current world or server context.
-    // Distinguishes between Singleplayer (World Name) and Multiplayer (Server Address).
+    // --- MIGRACIÓN Y LIMPIEZA (NIO) ---
+
+    public boolean hasConfig(BlockPos pos, String dimensionId) {
+        Path path = getFileForPos(pos, dimensionId);
+        return path != null && Files.exists(path);
+    }
+
+    public void moveConfig(BlockPos from, BlockPos to, String dimensionId) {
+        Path pathFrom = getFileForPos(from, dimensionId);
+        Path pathTo = getFileForPos(to, dimensionId);
+
+        if (pathFrom != null && Files.exists(pathFrom) && pathTo != null) {
+            try {
+                // Files.move es más robusto y permite reemplazar si existe (aunque aquí validamos antes)
+                Files.move(pathFrom, pathTo, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                System.err.println("[ChestSeparators] Error moviendo config: " + e.getMessage());
+            }
+        }
+    }
+
+    public void truncateChestConfig(BlockPos pos, String dimensionId, int maxSlotIndex) {
+        Path path = getFileForPos(pos, dimensionId);
+        if (path == null || !Files.exists(path)) return;
+
+        try {
+            NbtCompound root = NbtIo.readCompressed(path, NbtSizeTracker.ofUnlimitedBytes());
+            boolean[] changed = {false};
+
+            root.getCompound("Separators").ifPresent(separatorsTag -> {
+                Set<String> keysToRemove = new HashSet<>();
+
+                for (String key : separatorsTag.getKeys()) {
+                    try {
+                        int slot = Integer.parseInt(key);
+                        if (slot > maxSlotIndex) {
+                            keysToRemove.add(key);
+                        }
+                    } catch (NumberFormatException ignored) {}
+                }
+
+                if (!keysToRemove.isEmpty()) {
+                    for (String key : keysToRemove) {
+                        separatorsTag.remove(key);
+                    }
+                    changed[0] = true;
+                }
+            });
+
+            if (changed[0]) {
+                NbtIo.writeCompressed(root, path);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // --- GESTIÓN DE RUTAS (NIO) ---
+
     private String getWorldFolderName() {
         MinecraftClient client = MinecraftClient.getInstance();
         String name = "unknown_world";
@@ -145,67 +165,142 @@ public class ChestConfigManager {
         return name.replaceAll("[^a-zA-Z0-9_\\-]", "_");
     }
 
-    // Resolves the root configuration directory specific to the current world context.
-    private File getWorldConfigDir() {
-        File runDir = MinecraftClient.getInstance().runDirectory;
-        File baseModDir = new File(runDir, "config/" + MOD_ID);
-        File worldDir = new File(baseModDir, getWorldFolderName());
-        if (!worldDir.exists()) worldDir.mkdirs();
+    private Path getWorldConfigDir() {
+        // Obtenemos el directorio de ejecución como Path
+        Path runDir = MinecraftClient.getInstance().runDirectory.toPath();
+        Path baseModDir = runDir.resolve("config/" + MOD_ID);
+        Path worldDir = baseModDir.resolve(getWorldFolderName());
+
+        try {
+            if (!Files.exists(worldDir)) {
+                Files.createDirectories(worldDir);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return worldDir;
     }
 
-    // Resolves the specific subdirectory for separator data files.
-    private File getSeparatorsDir() {
-        File sepDir = new File(getWorldConfigDir(), FOLDER_NAME);
-        if (!sepDir.exists()) sepDir.mkdirs();
+    private Path getSeparatorsDir() {
+        Path sepDir = getWorldConfigDir().resolve(FOLDER_NAME);
+        try {
+            if (!Files.exists(sepDir)) {
+                Files.createDirectories(sepDir);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return sepDir;
     }
 
-    // --- FILE RESOLUTION ---
-
-    // Resolves a unique file path for a specific block position and dimension.
-    // Sanitizes dimension IDs (e.g., "minecraft:overworld" -> "minecraft_overworld").
-    private File getFileForPos(BlockPos pos, String dimensionId) {
+    private Path getFileForPos(BlockPos pos, String dimensionId) {
         if (pos == null) return null;
-        File dir = getSeparatorsDir();
+        Path dir = getSeparatorsDir();
         String safeDim = dimensionId.replace(":", "_");
         String fileName = String.format("%s_%d_%d_%d.dat", safeDim, pos.getX(), pos.getY(), pos.getZ());
-        return new File(dir, fileName);
+        return dir.resolve(fileName);
     }
 
-    private File getEnderChestFile() {
-        return new File(getWorldConfigDir(), ENDER_FILE_NAME);
+    private Path getEnderChestFile() {
+        return getWorldConfigDir().resolve(ENDER_FILE_NAME);
     }
 
-    // Resolves a unique file path based on Entity UUID (for Donkey/Mule inventories).
-    private File getFileForEntity(UUID uuid) {
+    private Path getFileForEntity(UUID uuid) {
         if (uuid == null) return null;
-        File dir = getSeparatorsDir();
-        return new File(dir, "entity_" + uuid.toString() + ".dat");
+        Path dir = getSeparatorsDir();
+        return dir.resolve("entity_" + uuid.toString() + ".dat");
     }
 
-    // --- DELETION LOGIC ---
+    // --- LÓGICA DE COFRES ---
 
-    // Clears runtime memory and physically deletes the persistent file.
+    private int[] getSlotColors(int slotIndex) {
+        return currentChestConfig.computeIfAbsent(slotIndex, k -> new int[4]);
+    }
+
+    public int getLineColor(int slotIndex, int actionFlag) {
+        if (!currentChestConfig.containsKey(slotIndex)) return 0;
+        int[] colors = currentChestConfig.get(slotIndex);
+        if (actionFlag == ACTION_TOP) return colors[IDX_TOP];
+        if (actionFlag == ACTION_BOTTOM) return colors[IDX_BOTTOM];
+        if (actionFlag == ACTION_LEFT) return colors[IDX_LEFT];
+        if (actionFlag == ACTION_RIGHT) return colors[IDX_RIGHT];
+        return 0;
+    }
+
+    public void paintLine(int slotIndex, int actionFlags, int argbColor) {
+        int[] colors = getSlotColors(slotIndex);
+        if ((actionFlags & ACTION_TOP) != 0) colors[IDX_TOP] = argbColor;
+        if ((actionFlags & ACTION_BOTTOM) != 0) colors[IDX_BOTTOM] = argbColor;
+        if ((actionFlags & ACTION_LEFT) != 0) colors[IDX_LEFT] = argbColor;
+        if ((actionFlags & ACTION_RIGHT) != 0) colors[IDX_RIGHT] = argbColor;
+    }
+
+    public void removeLine(int slotIndex, int actionFlags) {
+        if (!currentChestConfig.containsKey(slotIndex)) return;
+        int[] colors = currentChestConfig.get(slotIndex);
+        if ((actionFlags & ACTION_TOP) != 0) colors[IDX_TOP] = 0;
+        if ((actionFlags & ACTION_BOTTOM) != 0) colors[IDX_BOTTOM] = 0;
+        if ((actionFlags & ACTION_LEFT) != 0) colors[IDX_LEFT] = 0;
+        if ((actionFlags & ACTION_RIGHT) != 0) colors[IDX_RIGHT] = 0;
+        if (colors[0] == 0 && colors[1] == 0 && colors[2] == 0 && colors[3] == 0) {
+            currentChestConfig.remove(slotIndex);
+        }
+    }
+
+    public void copyToClipboard() {
+        this.clipboardConfig = new HashMap<>();
+        for (Map.Entry<Integer, int[]> entry : this.currentChestConfig.entrySet()) {
+            this.clipboardConfig.put(entry.getKey(), entry.getValue().clone());
+        }
+    }
+
+    public void pasteFromClipboard() {
+        if (this.clipboardConfig != null && !this.clipboardConfig.isEmpty()) {
+            this.currentChestConfig.clear();
+            for (Map.Entry<Integer, int[]> entry : this.clipboardConfig.entrySet()) {
+                this.currentChestConfig.put(entry.getKey(), entry.getValue().clone());
+            }
+        }
+    }
+
+    public boolean hasClipboardData() {
+        return this.clipboardConfig != null && !this.clipboardConfig.isEmpty();
+    }
+
+    // --- OPERACIONES PÚBLICAS IO ---
+
     public void clearChest(BlockPos pos, String dimensionId) {
         currentChestConfig.clear();
-        File file = getFileForPos(pos, dimensionId);
-        if (file != null && file.exists()) file.delete();
+        Path path = getFileForPos(pos, dimensionId);
+        if (path != null) {
+            try {
+                Files.deleteIfExists(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void clearEnderChest() {
         currentChestConfig.clear();
-        File file = getEnderChestFile();
-        if (file.exists()) file.delete();
+        try {
+            Files.deleteIfExists(getEnderChestFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void clearEntityChest(UUID uuid) {
         currentChestConfig.clear();
-        File file = getFileForEntity(uuid);
-        if (file != null && file.exists()) file.delete();
+        Path path = getFileForEntity(uuid);
+        if (path != null) {
+            try {
+                Files.deleteIfExists(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
-
-    // --- LOADING LOGIC ---
 
     public void loadConfig(BlockPos pos, String dimensionId) {
         clearCurrentConfig();
@@ -222,31 +317,6 @@ public class ChestConfigManager {
         loadFromFile(getFileForEntity(uuid));
     }
 
-    // Generic NBT file loader. Reads compressed NBT data and populates the runtime map.
-    // Robust error handling ignores malformed integer keys.
-    private void loadFromFile(File file) {
-        if (file == null || !file.exists()) return;
-        try {
-            NbtCompound root = NbtIo.readCompressed(file.toPath(), NbtSizeTracker.ofUnlimitedBytes());
-            if (root.contains("Separators")) {
-                NbtCompound listTag = null;
-                if (root.get("Separators") instanceof NbtCompound comp) listTag = comp;
-                else return;
-                for (String key : listTag.getKeys()) {
-                    try {
-                        int slot = Integer.parseInt(key);
-                        int data = listTag.getInt(key).orElse(0);
-                        currentChestConfig.put(slot, data);
-                    } catch (NumberFormatException ignored) {}
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // --- SAVING LOGIC ---
-
     public void saveConfig(BlockPos pos, String dimensionId) {
         saveToFile(getFileForPos(pos, dimensionId));
     }
@@ -259,23 +329,49 @@ public class ChestConfigManager {
         saveToFile(getFileForEntity(uuid));
     }
 
-    // Generic NBT file writer.
-    // Optimization: If the runtime config is empty, deletes the file instead of saving empty data
-    // to reduce disk clutter and I/O overhead.
-    private void saveToFile(File file) {
-        if (file == null) return;
+    private void loadFromFile(Path path) {
+        if (path == null || !Files.exists(path)) return;
+        try {
+            NbtCompound root = NbtIo.readCompressed(path, NbtSizeTracker.ofUnlimitedBytes());
+            if (root.contains("Separators")) {
+                root.getCompound("Separators").ifPresent(separatorsTag -> {
+                    for (String key : separatorsTag.getKeys()) {
+                        try {
+                            int slot = Integer.parseInt(key);
+                            separatorsTag.getIntArray(key).ifPresent(data -> {
+                                if (data.length == 4) {
+                                    currentChestConfig.put(slot, data);
+                                }
+                            });
+                        } catch (NumberFormatException ignored) {}
+                    }
+                });
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveToFile(Path path) {
+        if (path == null) return;
         if (currentChestConfig.isEmpty()) {
-            if (file.exists()) file.delete();
+            try {
+                Files.deleteIfExists(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return;
         }
         NbtCompound root = new NbtCompound();
         NbtCompound separatorsTag = new NbtCompound();
-        for (Map.Entry<Integer, Integer> entry : currentChestConfig.entrySet()) {
-            separatorsTag.putInt(String.valueOf(entry.getKey()), entry.getValue());
+
+        for (Map.Entry<Integer, int[]> entry : currentChestConfig.entrySet()) {
+            separatorsTag.putIntArray(String.valueOf(entry.getKey()), entry.getValue());
         }
+
         root.put("Separators", separatorsTag);
         try {
-            NbtIo.writeCompressed(root, file.toPath());
+            NbtIo.writeCompressed(root, path);
         } catch (IOException e) {
             e.printStackTrace();
         }

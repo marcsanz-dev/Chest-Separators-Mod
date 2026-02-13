@@ -10,5 +10,10 @@
   "message.chestseparators.button_hidden": "편집 버튼: 숨겨짐",
   "message.chestseparators.cleared": "레이아웃이 지워졌습니다",
   "message.chestseparators.copied": "레이아웃이 복사되었습니다",
-  "message.chestseparators.pasted": "레이아웃이 붙여넣어졌습니다"
+  "message.chestseparators.pasted": "레이아웃이 붙여넣어졌습니다",
+  "color.chestseparators.custom": "사용자 지정 색상 %s",
+  "tooltip.chestseparators.open_picker": "색상 선택기 열기",
+  "window.chestseparators.edit_color": "색상 편집",
+  "button.chestseparators.save": "저장",
+  "button.chestseparators.cancel": "취소"
 }

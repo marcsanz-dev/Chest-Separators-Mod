@@ -1,14 +1,19 @@
 {
-  "key.category.chestseparators.general": "Chest Separators Modu",
-  "key.chestseparators.toggle_button": "Düzenleme Butonunu Aç/Kapat",
+  "key.category.chestseparators.general": "Sandık Ayırıcı Modu",
+  "key.chestseparators.toggle_button": "Düzenleme Butonu",
   "tooltip.chestseparators.edit_mode_hint": "Düzenleme Modu (Gizlemek için %s)",
   "tooltip.chestseparators.eraser": "Silgi: Çizgileri sil",
-  "tooltip.chestseparators.clear_all": "Çöp Kutusu: Hepsini temizle",
+  "tooltip.chestseparators.clear_all": "Çöp: Hepsini temizle",
   "tooltip.chestseparators.copy": "Düzeni kopyala",
   "tooltip.chestseparators.paste": "Düzeni yapıştır",
-  "message.chestseparators.button_visible": "Düzenleme Butonu: Görünür",
-  "message.chestseparators.button_hidden": "Düzenleme Butonu: Gizli",
+  "message.chestseparators.button_visible": "Buton: Görünür",
+  "message.chestseparators.button_hidden": "Buton: Gizli",
   "message.chestseparators.cleared": "Düzen temizlendi",
   "message.chestseparators.copied": "Düzen kopyalandı",
-  "message.chestseparators.pasted": "Düzen yapıştırıldı"
+  "message.chestseparators.pasted": "Düzen yapıştırıldı",
+  "color.chestseparators.custom": "Özel Renk %s",
+  "tooltip.chestseparators.open_picker": "Renk Seçiciyi Aç",
+  "window.chestseparators.edit_color": "Rengi Düzenle",
+  "button.chestseparators.save": "Kaydet",
+  "button.chestseparators.cancel": "İptal"
 }

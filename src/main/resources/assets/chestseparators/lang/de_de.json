@@ -10,5 +10,10 @@
   "message.chestseparators.button_hidden": "Bearbeitungsknopf: Versteckt",
   "message.chestseparators.cleared": "Layout gelöscht",
   "message.chestseparators.copied": "Layout kopiert",
-  "message.chestseparators.pasted": "Layout eingefügt"
+  "message.chestseparators.pasted": "Layout eingefügt",
+  "color.chestseparators.custom": "Benutzerdefinierte Farbe %s",
+  "tooltip.chestseparators.open_picker": "Farbauswahl öffnen",
+  "window.chestseparators.edit_color": "Farbe bearbeiten",
+  "button.chestseparators.save": "Speichern",
+  "button.chestseparators.cancel": "Abbrechen"
 }

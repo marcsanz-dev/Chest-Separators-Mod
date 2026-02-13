@@ -10,5 +10,10 @@
   "message.chestseparators.button_hidden": "編集ボタン：非表示",
   "message.chestseparators.cleared": "レイアウトを消去しました",
   "message.chestseparators.copied": "レイアウトをコピーしました",
-  "message.chestseparators.pasted": "レイアウトを貼り付けました"
+  "message.chestseparators.pasted": "レイアウトを貼り付けました",
+  "color.chestseparators.custom": "カスタムカラー %s",
+  "tooltip.chestseparators.open_picker": "カラーピッカーを開く",
+  "window.chestseparators.edit_color": "色を編集",
+  "button.chestseparators.save": "保存",
+  "button.chestseparators.cancel": "キャンセル"
 }

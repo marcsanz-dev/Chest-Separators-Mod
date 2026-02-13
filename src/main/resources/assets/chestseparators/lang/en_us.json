@@ -10,5 +10,10 @@
   "message.chestseparators.button_hidden": "Edit Button: Hidden",
   "message.chestseparators.cleared": "Layout cleared",
   "message.chestseparators.copied": "Layout copied",
-  "message.chestseparators.pasted": "Layout pasted"
+  "message.chestseparators.pasted": "Layout pasted",
+  "color.chestseparators.custom": "Custom Color %s",
+  "tooltip.chestseparators.open_picker": "Open Color Picker",
+  "window.chestseparators.edit_color": "Edit Color",
+  "button.chestseparators.save": "Save",
+  "button.chestseparators.cancel": "Cancel"
 }
